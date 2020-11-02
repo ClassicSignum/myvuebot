@@ -1,5 +1,11 @@
 <template>
   <div id="app">
+    <!-- Root foo: {{rootFoo}} <br/>
+    Robot foo: {{robotFoo}} <br/>
+    user foo: {{userFoo}} <br/>
+    <br/>
+    root getter foo: {{rootGetterFoo}} <br/>
+    robot getter foo: {{robotGetterFoo}} <br/> -->
     <header>
       <nav>
         <ul>
@@ -41,10 +47,40 @@
 
 <script>
 // import HomePage from './components/HomePage.vue';
+import { mapState, mapGetters } from 'vuex';
 
 export default {
   name: 'App',
   computed: {
+    // rootFoo() {
+    //   return this.$store.state.foo;
+    // },
+    // robotFoo() {
+    //   return this.$store.state.robots.foo;
+    // },
+    // userFoo() {
+    //   return this.$store.state.users.foo;
+    // },
+
+    // instead of using above code we could use this code below
+    ...mapState({
+      rootFoo: 'foo',
+      robotFoo: (state) => state.robots.foo,
+      userFoo: (state) => state.users.foo,
+    }),
+    // rootGetterFoo() {
+    //   return this.$store.getters.foo;
+    // },
+    // robotGetterFoo() {
+    //   return this.$store.getters['robots/foo'];
+    // },
+    // userGetterFoo() {
+    //   return this.$store.getters['users/foo']; won't work cuz getters only works with namespaced
+    // },
+    ...mapGetters({
+      rootGetterFoo: 'foo',
+    }),
+    ...mapGetters('robots', { robotGetterFoo: 'foo' }),
     cart() {
       return this.$store.state.robots.cart;
     },

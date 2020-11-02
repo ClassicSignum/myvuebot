@@ -50,13 +50,16 @@
 
 <script>
 // import availableParts from '../../data/parts';
+import { mapActions } from 'vuex';
 import PartSelector from './PartSelector.vue';
 import CollapsibleSection from '../collabsiblesection/CollapsibleSection.vue';
 
 export default {
   name: 'RobotBuilder',
   created() {
-    this.$store.dispatch('getParts');
+    // this.$store.dispatch('robots/getParts');
+    // no need to dispatch now mapAction included
+    this.getParts();
   },
   beforeRouteLeave(to, from, next) {
     if (this.addedToCart) {
@@ -112,13 +115,14 @@ export default {
 
   },
   methods: {
+    ...mapActions('robots', ['getParts', 'addRobotToCart']),
     addToCart() {
       const robot = this.selectedRobot;
       const cost = robot.head.cost + robot.leftArm.cost
                   + robot.torso.cost + robot.rightArm.cost + robot.base.cost;
       console.log(robot);
       // this.$store.commit('addRobotToCart', { ...robot, cost });
-      this.$store.dispatch('addRobotToCart', { ...robot, cost });
+      this.addRobotToCart({ ...robot, cost });
       // this.cart.push({ ...robot, cost });
       this.addedToCart = true;
     },
